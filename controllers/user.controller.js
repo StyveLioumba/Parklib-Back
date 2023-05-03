@@ -9,7 +9,7 @@ const UUID = require('uuid');
 exports.findAllUser = (req, res) => {
     const isActivated = req.query.isActivated??true;
     logger.info(`${req.method} ${req.originalUrl}, Fetching users.`);
-    User.findAll({where: {isActivated: isActivated}, order: [['createdAt', 'DESC']]})
+    User.findAll({paranoid: false,order: [['createdAt', 'DESC']]})
         .then(data => {
             const users = data.map(user => {
                 const {password, ...userWithoutPassword} = user.dataValues;
@@ -285,11 +285,12 @@ exports.deleteUser = async (req, res) => {
                 'You\'re not the owner of those account'
             )
         )
+        return;
     }
-
+    
     logger.info(`${req.method} ${req.originalUrl}, Deleting user.`);
     User.update(
-        {deletedAt: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000) },
+        {isActivated: false, deletedAt: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000) },
         {where : {id: id}}
     )
     .then(response => {
@@ -326,8 +327,8 @@ exports.restoreUserDeleted = async (req, res) => {
                 new Response(
                     HttpStatus.ACCEPTED.code,
                     HttpStatus.ACCEPTED.message,
-                    data,
-                    'User has been successfully restored'
+                    'User has been successfully restored',
+                    data
                 )
             )
         }
@@ -351,6 +352,50 @@ exports.restoreUserDeleted = async (req, res) => {
                     `Some error occurred while deleting the Parking.`
                 )
             );
+        }
+    })
+}
+
+exports.deleteUserByAdmin = async (req, res) => {
+    const id = req.params.id
+
+    const userId = await User.findOne({
+        where: {
+            id : id
+        }
+    })
+
+    if(!userId.id ){
+        res.status(HttpStatus.FORBIDDEN.code).send(
+            new Response(
+                HttpStatus.FORBIDDEN.code,
+                HttpStatus.FORBIDDEN.message,
+                "User not found"
+            )
+        )
+        return;
+    }
+    
+    logger.info(`${req.method} ${req.originalUrl}, Deleting user.`);
+    User.update(
+        {isActivated: false ,deletedAt: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000) },
+        {where : {id: id}}
+    )
+    .then(response => {
+    if (response[0] == 0) {
+        res.status(HttpStatus.BAD_REQUEST.code)
+            .send(new Response(HttpStatus.BAD_REQUEST.code,HttpStatus.BAD_REQUEST.message,`Cannot delete User with id=${id}. Maybe User was not found!` ));
+        return;
+    }
+    res.status(HttpStatus.OK.code)
+            .send(new Response(HttpStatus.OK.code,HttpStatus.OK.message,`The account deletion request has been sent successfully!` ));
+    }).catch(error => {
+        if (error.name === 'SequelizeUniqueConstraintError') {
+            res.status(HttpStatus.FORBIDDEN.code)
+                .send(new Response(HttpStatus.FORBIDDEN.code,HttpStatus.FORBIDDEN.message,`Account already deleted` ));
+        } else {
+            res.status(HttpStatus.INTERNAL_SERVER_ERROR.code)
+                .send(new Response(HttpStatus.INTERNAL_SERVER_ERROR.code,HttpStatus.INTERNAL_SERVER_ERROR.message,`Some error occurred while creating the account.`));
         }
     })
 }
