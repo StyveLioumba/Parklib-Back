@@ -41,6 +41,18 @@ module.exports = {
         createdAt: new Date(),
         updatedAt: new Date(),
       },
+      {
+        firstName:"super",
+        lastName:"admin",
+        password,
+        phone:"00 00 00 00 00",
+        picture: `https://ui-avatars.com/api/?size=200&background=random&name=super+Admin`,
+        address: "10 rue du chateau",
+        email: "super@admin.com",
+        isActivated: true,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      }
     ])
   },
 

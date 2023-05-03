@@ -1,4 +1,5 @@
 const User = require("../models").User;
+const Role = require("../models").Role;
 const bcrypt = require('bcrypt');
 const constante = require('../utils/constantes.util.js');
 const logger = require('../utils/logger.util.js');
@@ -9,7 +10,20 @@ const UUID = require('uuid');
 exports.findAllUser = (req, res) => {
     const isActivated = req.query.isActivated??true;
     logger.info(`${req.method} ${req.originalUrl}, Fetching users.`);
-    User.findAll({paranoid: false,order: [['createdAt', 'DESC']]})
+    User.findAll(
+        {
+            paranoid: false,
+            order: [['createdAt', 'DESC']],
+            include: [
+                {
+                    model: Role,
+                    attributes: ['id', 'title'],
+                    through: {
+                        attributes: []
+                    }
+                }
+            ]
+        })
         .then(data => {
             const users = data.map(user => {
                 const {password, ...userWithoutPassword} = user.dataValues;
@@ -33,7 +47,18 @@ exports.findOneUser = (req, res) => {
         return;
     }
 
-    User.findByPk(id)
+    User.findByPk(id,
+        {
+            include: [
+                {
+                    model: Role,
+                    attributes: ['id', 'title'],
+                    through: {
+                        attributes: []
+                    }
+                }
+            ]
+        })
         .then(data => {
             const {password, ...user} = data.dataValues;
             if (!user.isActivated) {
@@ -92,7 +117,19 @@ exports.updateUser = async (req, res) => {
 
     logger.info(`${req.method} ${req.originalUrl}, Updating user.`);
 
-    User.update(user, {where: {id: id}})
+    User.update(user, 
+        {
+            where: {id: id},
+            include: [
+                {
+                    model: Role,
+                    attributes: ['id', 'title'],
+                    through: {
+                        attributes: []
+                    }
+                }
+            ]
+        })
         .then(response => {
             if (response[0] === 0) {
                 res.status(HttpStatus.OK.code)
@@ -159,7 +196,19 @@ exports.updateProfilePicture = async (req, res) => {
 
     logger.info(`${req.method} ${req.originalUrl}, Updating user profile.`);
 
-    User.update(user, {where: {id: id}})
+    User.update(user, 
+        {
+            where: {id: id},
+            include: [
+                {
+                    model: Role,
+                    attributes: ['id', 'title'],
+                    through: {
+                        attributes: []
+                    }
+                }
+            ]
+        })
         .then(response => {
             if (response[0] === 0) {
                 res.status(HttpStatus.OK.code)
@@ -216,7 +265,18 @@ exports.updatePassword = async (req, res) => {
 
     logger.info(`${req.method} ${req.originalUrl}, Updating user password.`);
 
-    User.findByPk(id)
+    User.findByPk(id,
+        {
+            include: [
+                {
+                    model: Role,
+                    attributes: ['id', 'title'],
+                    through: {
+                        attributes: []
+                    }
+                }
+            ]
+        })
         .then(data => {
             bcrypt.compare(oldPassword, data.password, (err, result)=> {
                 if (!result){
@@ -237,14 +297,37 @@ exports.updatePassword = async (req, res) => {
                         return;
                     }
 
-                    User.update({password: hash}, {where: {id: id}})
+                    User.update({password: hash}, 
+                        {
+                            where: {id: id},
+                            include: [
+                                {
+                                    model: Role,
+                                    attributes: ['id', 'title'],
+                                    through: {
+                                        attributes: []
+                                    }
+                                }
+                            ]
+                        })
                         .then(response => {
                             if (response[0] === 0) {
                                 res.status(HttpStatus.OK.code)
                                     .send(new Response(HttpStatus.OK.code,HttpStatus.OK.message,`Cannot update account with id=${id}. Maybe account was not found or req.body is empty!`));
                                 return;
                             }
-                            User.findByPk(id).then(data=>{
+                            User.findByPk(id,
+                                {
+                                    include: [
+                                        {
+                                            model: Role,
+                                            attributes: ['id', 'title'],
+                                            through: {
+                                                attributes: []
+                                            }
+                                        }
+                                    ]
+                                }).then(data=>{
                                 const {password, ...user} = data.dataValues;
                                 res.status(HttpStatus.OK.code)
                                     .send(new Response(HttpStatus.OK.code,HttpStatus.OK.message,`Password updated`, user));
@@ -291,7 +374,18 @@ exports.deleteUser = async (req, res) => {
     logger.info(`${req.method} ${req.originalUrl}, Deleting user.`);
     User.update(
         {isActivated: false, deletedAt: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000) },
-        {where : {id: id}}
+        {
+            where : {id: id},
+            include: [
+                {
+                    model: Role,
+                    attributes: ['id', 'title'],
+                    through: {
+                        attributes: []
+                    }
+                }
+            ]
+        }
     )
     .then(response => {
     if (response[0] == 0) {
@@ -318,6 +412,15 @@ exports.restoreUserDeleted = async (req, res) => {
         where: {
             id: id
         },
+        include: [
+            {
+                model: Role,
+                attributes: ['id', 'title'],
+                through: {
+                    attributes: []
+                }
+            }
+        ],
         paranoid: false,
     })
     .then((data) => {
@@ -379,7 +482,18 @@ exports.deleteUserByAdmin = async (req, res) => {
     logger.info(`${req.method} ${req.originalUrl}, Deleting user.`);
     User.update(
         {isActivated: false ,deletedAt: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000) },
-        {where : {id: id}}
+        {
+            where : {id: id},
+            include: [
+                {
+                    model: Role,
+                    attributes: ['id', 'title'],
+                    through: {
+                        attributes: []
+                    }
+                }
+            ]
+        }
     )
     .then(response => {
     if (response[0] == 0) {
