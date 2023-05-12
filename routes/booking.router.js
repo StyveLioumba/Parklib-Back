@@ -4,6 +4,7 @@ const reservation = require("../controllers/booking.controller.js");
 const authenticateJWT = require("../middleware/authjwt.js").authenticateJWT;
 
 router.get("/", authenticateJWT, reservation.findAllBooking);
+router.get("/admin", authenticateJWT, reservation.findAllBookingByAdmin);
 router.get("/:id", authenticateJWT, reservation.findOneBooking);
 router.post("/create", authenticateJWT, reservation.createBooking);
 router.delete("/:id/delete", authenticateJWT, reservation.deleteBooking);

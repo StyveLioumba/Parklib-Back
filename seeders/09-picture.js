@@ -13,13 +13,13 @@ module.exports = {
     */
    await queryInterface.bulkInsert('Pictures', [
     {
-      url:"maSuperImage1",
+      url:"https://loremflickr.com/320/240/paris,girl/all",
       PostId:1,
       createdAt: new Date(),
       updatedAt: new Date(),
     },
     {
-      url:"imageDeParking",
+      url:"https://loremflickr.com/320/240/paris,girl/all",
       PostId:1,
       createdAt: new Date(),
       updatedAt: new Date(),
