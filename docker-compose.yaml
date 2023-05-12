@@ -39,6 +39,18 @@ services:
       MYSQL_ROOT_USER: ${DB_DEV_USERNAME}
     volumes:
       - dbdata:/var/lib/mysql
+  db-test:
+    image: mysql
+    container_name: mysql-db-test
+    restart: always
+    ports:
+      - 3307:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_TEST_PWD}
+      MYSQL_DATABASE: ${DB_TEST_NAME}
+      MYSQL_ROOT_USER: ${DB_TEST_USERNAME}
+    volumes:
+      - db_test_data:/var/lib/mysql
   
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
@@ -52,10 +64,9 @@ services:
       MYSQL_ROOT_PASSWORD: ${DB_DEV_PWD}
       MYSQL_ROOT_USER: ${DB_DEV_USERNAME}
     restart: always
-    depends_on:
-      - db
     
 volumes:
   dbdata:
   cache:
   node_module:
+  db_test_data:
