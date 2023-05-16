@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">48.88% </span>
+                <span class="strong">47.72% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>22/45</span>
+                <span class='fraction'>21/44</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">48.88% </span>
+                <span class="strong">47.72% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>22/45</span>
+                <span class='fraction'>21/44</span>
             </div>
         
             
@@ -143,19 +143,17 @@
 <a name='L78'></a><a href='#L78'>78</a>
 <a name='L79'></a><a href='#L79'>79</a>
 <a name='L80'></a><a href='#L80'>80</a>
-<a name='L81'></a><a href='#L81'>81</a>
-<a name='L82'></a><a href='#L82'>82</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
+<a name='L81'></a><a href='#L81'>81</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -165,7 +163,7 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -179,18 +177,18 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -224,7 +222,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">const express = require("express");
 const multer = require("multer");
 const constants = require("../utils/constantes.util.js");
@@ -232,7 +230,6 @@ const Response = require("../utils/response.util.js");
 const HttpStatus = require("../utils/httpStatus.util.js");
 const logger = require("../utils/logger.util.js");
 require('dotenv').config();
-const authenticateJWT = require("../middleware/authjwt.js").authenticateJWT;
 &nbsp;
 const router = express.Router();
 &nbsp;
@@ -266,12 +263,12 @@ const userController = require("../controllers/user.controller.js");
 &nbsp;
 router.get("/",userController.findAllUser);
 router.get("/:id", userController.findOneUser);
-router.put("/:id", authenticateJWT, userController.updateUser);
-router.put("/:id/reset-password", authenticateJWT, userController.updatePassword);
-router.delete("/:id", authenticateJWT, userController.deleteUser);
-router.delete("/admin/:id", authenticateJWT, userController.deleteUserByAdmin);
-router.put('/restore/:id', authenticateJWT, userController.restoreUserDeleted)
-router.put("/:id/profile", authenticateJWT, <span class="fstat-no" title="function not covered" >(r</span>eq, res) =&gt; {
+router.put("/:id", userController.updateUser);
+router.put("/:id/reset-password", userController.updatePassword);
+router.delete("/:id", userController.deleteUser);
+router.delete("/admin/:id", userController.deleteUserByAdmin);
+router.put('/restore/:id', userController.restoreUserDeleted)
+router.put("/:id/profile", <span class="fstat-no" title="function not covered" >(r</span>eq, res) =&gt; {
 <span class="cstat-no" title="statement not covered" >    logger.info("uploading profile picture");</span>
 <span class="cstat-no" title="statement not covered" >    upload(req, res, <span class="fstat-no" title="function not covered" >(e</span>rr) =&gt; { </span>
 &nbsp;
@@ -313,7 +310,7 @@ module.exports = router;
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2023-05-12T12:55:19.937Z
+                at 2023-05-15T08:21:51.055Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

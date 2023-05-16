@@ -1,13 +1,12 @@
 const express = require("express");
 const router = express.Router();
 const reservation = require("../controllers/booking.controller.js");
-const authenticateJWT = require("../middleware/authjwt.js").authenticateJWT;
 
-router.get("/", authenticateJWT, reservation.findAllBooking);
-router.get("/admin", authenticateJWT, reservation.findAllBookingByAdmin);
-router.get("/:id", authenticateJWT, reservation.findOneBooking);
-router.post("/create", authenticateJWT, reservation.createBooking);
-router.delete("/:id/delete", authenticateJWT, reservation.deleteBooking);
+router.get("/", reservation.findAllBooking);
+router.get("/admin", reservation.findAllBookingByAdmin);
+router.get("/:id", reservation.findOneBooking);
+router.post("/create", reservation.createBooking);
+router.delete("/:id/delete", reservation.deleteBooking);
 // router.put("/update", reservation.updateBooking);
 
 

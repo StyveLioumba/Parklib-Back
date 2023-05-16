@@ -1,0 +1,56 @@
+{
+  "name": "parklib",
+  "type": "commonjs",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "db:reset": "sequelize db:drop && sequelize db:create && sequelize db:migrate && sequelize db:seed:all ",
+    "db:reset:dev": "NODE_ENV=development && sequelize db:drop && sequelize db:create && sequelize db:migrate && sequelize db:seed:all && npm t && nodemon app.js",
+    "start:dev": "NODE_ENV=development && nodemon app.js",
+    "start:prod": "NODE_ENV=production && node app.js",
+    "test": "NODE_ENV=test && sequelize db:drop && sequelize db:create && sequelize db:migrate && sequelize db:seed:all && jest --coverage --watchAll --verbose",
+    "test:cov": "jest --coverage"
+  },
+  "keywords": [
+    "nodejs",
+    "Sequelize",
+    "mysql",
+    "rest",
+    "api",
+    "express",
+    "jest",
+    "socket.io"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^1.1.3",
+    "bcrypt": "^5.1.0",
+    "body-parser": "^1.20.1",
+    "cookie-parse": "^0.4.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "formidable": "^2.1.1",
+    "ip": "^1.1.8",
+    "jsonwebtoken": "^8.5.1",
+    "multer": "^1.4.5-lts.1",
+    "mysql2": "^2.3.3",
+    "pino": "^8.7.0",
+    "pino-pretty": "^9.1.1",
+    "sequelize": "^6.25.3",
+    "socket.io": "^4.6.1",
+    "util": "^0.12.5",
+    "uuid": "^9.0.0"
+  },
+  "devDependencies": {
+    "@types/jest": "^29.5.1",
+    "faker": "^6.6.6",
+    "jest": "^29.5.0",
+    "nodemon": "^2.0.20",
+    "sequelize-cli": "^6.5.2",
+    "socket.io-client": "^4.6.1",
+    "supertest": "^6.3.3"
+  }
+}

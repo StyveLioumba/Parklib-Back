@@ -80,7 +80,6 @@ exports.register = async (req, res) => {
                             )
                         })
                         .catch(err => {
-                            console.log("err1", err);
                             res.status(HttpStatus.INTERNAL_SERVER_ERROR.code).send(
                                 new Response(
                                     HttpStatus.INTERNAL_SERVER_ERROR.code,

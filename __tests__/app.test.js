@@ -2,11 +2,11 @@ const request = require('supertest');
 let server;
 
 describe('App Server',()=>{
-    beforeAll(()=>{
+    beforeEach(()=>{
         server = require("../app.js");
     })
 
-    afterAll(()=>{
+    afterEach(()=>{
         server.close();
     });
 

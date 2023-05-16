@@ -12,6 +12,9 @@ node_modules/
 
 .DS_Store
 
+coverage/*
+coverage/
+
 public/post_picture/*.png
 public/post_picture/*.jpg
 public/post_picture/*.jpeg
