@@ -23,6 +23,12 @@ module.exports = {
       RoleId:1,
       createdAt: new Date(),
       updatedAt: new Date()
+    },
+    {
+      UserId:3,
+      RoleId:1,
+      createdAt: new Date(),
+      updatedAt: new Date()
     }
    ])
   },

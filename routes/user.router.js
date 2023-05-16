@@ -37,13 +37,12 @@ let upload = uploadFile.single('picture');
 
 const userController = require("../controllers/user.controller.js");
 
-router.get("/", (req, res) => {
-    userController.findAllUser(req, res)
-});
+router.get("/",userController.findAllUser);
 router.get("/:id", userController.findOneUser);
 router.put("/:id", authenticateJWT, userController.updateUser);
 router.put("/:id/reset-password", authenticateJWT, userController.updatePassword);
 router.delete("/:id", authenticateJWT, userController.deleteUser);
+router.delete("/admin/:id", authenticateJWT, userController.deleteUserByAdmin);
 router.put('/restore/:id', authenticateJWT, userController.restoreUserDeleted)
 router.put("/:id/profile", authenticateJWT, (req, res) => {
     logger.info("uploading profile picture");

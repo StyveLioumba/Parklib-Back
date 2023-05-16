@@ -60,14 +60,14 @@ new SocketIoService(io);
  */
 
 app.use('/parking-particulier', parkingParticulierRouter);
-app.use('/annonce', postRouter);
-app.use('/picture',pictureRouter);
+app.use('/annonces', postRouter);
+app.use('/pictures',pictureRouter);
 app.use('/validation-status', validationStatusRouter);
 app.use('/bookings',bookingRouter);
 app.use('/verification',appRouter);
 app.use('/auth', authRouter);
 app.use('/users',userRouter);
-app.use('/role',roleRouter);
+app.use('/roles',roleRouter);
 app.get("/", (req, res) => res.send(new Response(HttpStatus.OK.code,HttpStatus.OK.message ,`Welcome to the Parklib's API, v1.0.0`,{apiDocs:`http://${ip.address()}:${PORT}/api-docs`})));
 app.all("*", (req, res) => res.status(HttpStatus.NOT_FOUND.code).send(new Response(HttpStatus.NOT_FOUND.code,HttpStatus.NOT_FOUND.message ,`This route does not exist`)));
 
