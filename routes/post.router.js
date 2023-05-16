@@ -14,5 +14,6 @@ router.get('/parkingParticulier/:id', post_controller.list_post_by_parkingPartic
 router.get('/user/:id', post_controller.list_post_by_user);
 router.get('search/:search', post_controller.search_post);
 router.delete('/:id', authenticateJWT, post_controller.delete_post);
+router.delete('/admin/:id', authenticateJWT, post_controller.delete_post_by_admin);
 
 module.exports = router;

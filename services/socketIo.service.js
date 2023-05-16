@@ -10,9 +10,7 @@ class SocketIoService{
         }
 
         this.io.on('connection', socket => {
-            console.log(`New connection ${socket.id}`);
-            socket.on('disconnect', () => console.log('disconnected')); 
-            
+            socket.on('disconnect', () => {}); 
             if (SocketIoService.socket === null) {
                 SocketIoService.socket = socket;
             }

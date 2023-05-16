@@ -1,6 +1,7 @@
 const Booking = require("../models").Booking;
 const Post = require('../models').Post;
 const ParkingParticulier = require('../models').ParkingParticulier;
+const User = require("../models").User;
 const Role = require("../models").Role;
 const RoleUser = require("../models").RoleUser;
 const HttpStatus = require('../utils/httpStatus.util.js');
@@ -21,6 +22,52 @@ exports.findAllBooking = async (req, res) => {
     .then(data =>{
         if(data){
             logger.info(`Bookings retrieved for user with ID ${userIdConnected}`);
+
+            res.status(HttpStatus.OK.code)
+            .send(new Response(HttpStatus.OK.code,HttpStatus.OK.message,`Bookings retrieved`, data));
+        }
+        else{
+            logger.warn(`No bookings found for user with ID ${userIdConnected}`);
+
+            res.status(HttpStatus.NOT_FOUND.code)
+               .send(new Response(HttpStatus.NOT_FOUND.code,HttpStatus.NOT_FOUND.message, `Bookings not found`, data));
+        }
+    })    
+    .catch(err => {
+        logger.error(`Error while retrieving bookings for user with ID ${userIdConnected}: ${err.message}`);
+
+        res.status(HttpStatus.INTERNAL_SERVER_ERROR.code)
+        .send(new Response(HttpStatus.INTERNAL_SERVER_ERROR.code,HttpStatus.INTERNAL_SERVER_ERROR.message,`Some error occurred while retrieving bookings.`, err));
+    });
+};
+
+exports.findAllBookingByAdmin = async (req, res) => {
+
+
+    logger.info(`Fetching all bookings for admin`);
+
+    Booking.findAll({
+        include: [
+            {
+                model: Post,
+                
+            },
+            {
+                model: User,
+                include:[
+                    {
+                        model: Role,
+                        attributes: ['id', 'title'],
+                        through: {
+                            attributes: []
+                        }
+                    }
+                ]
+            }
+        ]
+    })
+    .then(data =>{
+        if(data){
 
             res.status(HttpStatus.OK.code)
             .send(new Response(HttpStatus.OK.code,HttpStatus.OK.message,`Bookings retrieved`, data));

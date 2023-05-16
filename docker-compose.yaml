@@ -4,14 +4,13 @@ services:
   api:
     build: ./
     container_name: node-api
+    restart: on-failure
     ports:
-      - ${PORT}:${PORT}
+      - 80:${PORT}
     volumes:
-      - nodeModule:/app/node_modules
+      - node_module:/app/node_modules
       - .:/app
     depends_on:
-      - cache
-    links:
       - db
       - cache
     environment:
@@ -25,8 +24,6 @@ services:
     restart: always
     ports:
       - ${REDIS_PORT}:6379
-    depends_on:
-      - db
     volumes: 
       - cache:/data
 
@@ -39,27 +36,37 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: ${DB_DEV_PWD}
       MYSQL_DATABASE: ${DB_DEV_NAME}
-      MYSQL_PASSWORD: ${DB_DEV_PWD}
+      MYSQL_ROOT_USER: ${DB_DEV_USERNAME}
     volumes:
       - dbdata:/var/lib/mysql
+  db-test:
+    image: mysql
+    container_name: mysql-db-test
+    restart: always
+    ports:
+      - 3307:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_TEST_PWD}
+      MYSQL_DATABASE: ${DB_TEST_NAME}
+      MYSQL_ROOT_USER: ${DB_TEST_USERNAME}
+    volumes:
+      - db_test_data:/var/lib/mysql
   
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
     container_name: phpmyadmin
     ports:
       - 8080:80
-    links:
-      - db
     environment:
       PMA_HOST: mysql-db
       PMA_PORT: 3306
       PMA_ARBITRARY: 1
       MYSQL_ROOT_PASSWORD: ${DB_DEV_PWD}
+      MYSQL_ROOT_USER: ${DB_DEV_USERNAME}
     restart: always
-    depends_on:
-      - db
     
 volumes:
   dbdata:
   cache:
-  nodeModule:
+  node_module:
+  db_test_data:

@@ -17,7 +17,7 @@ exports.list_post = (req, res, next) => {
         ],
         include: [
             {
-                model: ParkingParticulier,
+                model: ParkingParticulier
             },
             {
                 model: User,
@@ -535,6 +535,43 @@ exports.delete_post = async (req, res, next) => {
                 HttpStatus.FORBIDDEN.code,
                 HttpStatus.FORBIDDEN.message,
                 'You\'re not the owner of those post'
+            )
+        )
+    }
+
+    Post.destroy({
+        where : {
+            id: id
+        }
+    })
+    .then(() => {
+        res.status(HttpStatus.NO_CONTENT.code).send(
+            new Response(
+                HttpStatus.NO_CONTENT.code,
+                HttpStatus.NO_CONTENT.message,
+            )
+        )
+    })
+    .catch(err => {
+        console.log(err);
+        res.status(HttpStatus.INTERNAL_SERVER_ERROR.code).send(
+            new Response(
+                HttpStatus.INTERNAL_SERVER_ERROR.code,
+                HttpStatus.INTERNAL_SERVER_ERROR.message,
+            )
+        )
+    })
+}
+
+
+exports.delete_post_by_admin = async (req, res, next) => {
+    const id = req.params.id;
+    if(!id){
+        res.status(HttpStatus.BAD_REQUEST.code).send(
+            new Response(
+                HttpStatus.BAD_REQUEST.code,
+                HttpStatus.BAD_REQUEST.message,
+                `Id value ${id}, cannot be empty`
             )
         )
     }

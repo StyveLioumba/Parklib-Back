@@ -6,9 +6,11 @@
   "main": "app.js",
   "scripts": {
     "db:reset": "sequelize db:drop && sequelize db:create && sequelize db:migrate && sequelize db:seed:all ",
-    "db:reset:dev": "sequelize db:drop && sequelize db:create && sequelize db:migrate && sequelize db:seed:all && nodemon app.js",
-    "start:dev": "nodemon app.js",
-    "start:prod": "node app.js"
+    "db:reset:dev": "NODE_ENV=development && sequelize db:drop && sequelize db:create && sequelize db:migrate && sequelize db:seed:all && npm t && nodemon app.js",
+    "start:dev": "NODE_ENV=development && nodemon app.js",
+    "start:prod": "NODE_ENV=production && node app.js",
+    "test": "NODE_ENV=test && sequelize db:drop && sequelize db:create && sequelize db:migrate && sequelize db:seed:all && jest --coverage --watchAll --verbose",
+    "test:cov": "jest --coverage"
   },
   "keywords": [
     "nodejs",
@@ -16,7 +18,9 @@
     "mysql",
     "rest",
     "api",
-    "express"
+    "express",
+    "jest",
+    "socket.io"
   ],
   "author": "",
   "license": "ISC",
@@ -41,7 +45,12 @@
     "uuid": "^9.0.0"
   },
   "devDependencies": {
+    "@types/jest": "^29.5.1",
+    "faker": "^6.6.6",
+    "jest": "^29.5.0",
     "nodemon": "^2.0.20",
-    "sequelize-cli": "^6.5.2"
+    "sequelize-cli": "^6.5.2",
+    "socket.io-client": "^4.6.1",
+    "supertest": "^6.3.3"
   }
 }
